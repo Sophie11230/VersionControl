@@ -25,6 +25,7 @@ namespace _4RealEstate
             InitializeComponent();
             LoadData();
             CreateExcel();
+            CreateTable();
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -74,7 +75,7 @@ namespace _4RealEstate
             for (int i = 0; i < headers.Length; i++)
             {
                 xlSheet.Cells[1, i + 1] = headers[i];
-            };
+            }
 
             object[,] values = new object[flats.Count, headers.Length];
 
@@ -91,12 +92,39 @@ namespace _4RealEstate
                 values[counter, 5] = f.NumberOfRooms;
                 values[counter, 6] = f.FloorArea;
                 values[counter, 7] = f.Price;
-                values[counter, 8] = "";
+                values[counter, 8] = $"=1000000*{GetCell(counter+2,8)}/{GetCell(counter+2,7)}"; // +2, mert masodik cellatol szamolunk es counter 0-tol indul
                 counter++;
-            };
+            }
             xlSheet.get_Range(
             GetCell(2, 1),
             GetCell(1 + values.GetLength(0), values.GetLength(1))).Value2 = values;
+
+            Excel.Range headerRange = xlSheet.get_Range(GetCell(1, 1), GetCell(1, headers.Length));
+            headerRange.Font.Bold = true;
+            headerRange.VerticalAlignment = Excel.XlVAlign.xlVAlignCenter;
+            headerRange.HorizontalAlignment = Excel.XlHAlign.xlHAlignCenter;
+            headerRange.EntireColumn.AutoFit();
+            headerRange.RowHeight = 40;
+            headerRange.BorderAround2(Excel.XlLineStyle.xlContinuous, Excel.XlBorderWeight.xlThick);
+
+            int lastRowID = xlSheet.UsedRange.Rows.Count;
+
+            Excel.Range tableRange = xlSheet.get_Range(GetCell(1, 1), GetCell(lastRowID, headers.Length));
+            Excel.Range firstColRange = xlSheet.get_Range(GetCell(1, 1), GetCell(lastRowID, 1));
+            //Excel.Range lastRowRange = xlSheet.get_Range(GetCell(lastRowID, 1), GetCell(lastRowID, headers.Length));
+            Excel.Range lastColRange = xlSheet.get_Range(GetCell(1, headers.Length), GetCell(lastRowID, headers.Length));
+
+            tableRange.BorderAround2(Excel.XlLineStyle.xlContinuous, Excel.XlBorderWeight.xlThick);
+            
+            firstColRange.Font.Bold = true;
+            firstColRange.Interior.Color = Color.LightYellow;
+            
+            lastColRange.Interior.Color = Color.LightGreen;
+            lastColRange.NumberFormat = "# ###.##";            
+
+            headerRange.Interior.Color = Color.LightBlue;
+
+            //Az utolsó oszlop adatai két tizedesre kerekített formában jelenjenek meg. (Google)
 
         }
         private string GetCell(int x, int y)
@@ -104,7 +132,6 @@ namespace _4RealEstate
             string ExcelCoordinate = "";
             int dividend = y;
             int modulo;
-
             while (dividend > 0)
             {
                 modulo = (dividend - 1) % 26;
@@ -112,7 +139,6 @@ namespace _4RealEstate
                 dividend = (int)((dividend - modulo) / 26);
             }
             ExcelCoordinate += x.ToString();
-
             return ExcelCoordinate;
         }
     }
