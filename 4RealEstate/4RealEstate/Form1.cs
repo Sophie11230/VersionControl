@@ -124,8 +124,6 @@ namespace _4RealEstate
 
             headerRange.Interior.Color = Color.LightBlue;
 
-            //Az utolsó oszlop adatai két tizedesre kerekített formában jelenjenek meg. (Google)
-
         }
         private string GetCell(int x, int y)
         {
