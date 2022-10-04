@@ -25,7 +25,7 @@ namespace _4RealEstate
             InitializeComponent();
             LoadData();
             CreateExcel();
-            CreateTable();
+            //CreateTable();
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -44,7 +44,7 @@ namespace _4RealEstate
                 xlWB = xlApp.Workbooks.Add(Missing.Value);
                 xlSheet = xlWB.ActiveSheet;
 
-                //CreateTable();
+                CreateTable();
 
                 xlApp.Visible = true;
                 xlApp.UserControl = true;
