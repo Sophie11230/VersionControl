@@ -41,11 +41,11 @@ namespace _5WebService
             // dataGridView1
             // 
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Location = new System.Drawing.Point(34, 29);
+            this.dataGridView1.Location = new System.Drawing.Point(219, 23);
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.RowHeadersWidth = 62;
             this.dataGridView1.RowTemplate.Height = 28;
-            this.dataGridView1.Size = new System.Drawing.Size(360, 621);
+            this.dataGridView1.Size = new System.Drawing.Size(682, 209);
             this.dataGridView1.TabIndex = 0;
             // 
             // chartRateData
@@ -54,13 +54,13 @@ namespace _5WebService
             this.chartRateData.ChartAreas.Add(chartArea1);
             legend1.Name = "Legend1";
             this.chartRateData.Legends.Add(legend1);
-            this.chartRateData.Location = new System.Drawing.Point(449, 29);
+            this.chartRateData.Location = new System.Drawing.Point(219, 250);
             this.chartRateData.Name = "chartRateData";
             series1.ChartArea = "ChartArea1";
             series1.Legend = "Legend1";
             series1.Name = "Series1";
             this.chartRateData.Series.Add(series1);
-            this.chartRateData.Size = new System.Drawing.Size(624, 421);
+            this.chartRateData.Size = new System.Drawing.Size(682, 421);
             this.chartRateData.TabIndex = 1;
             this.chartRateData.Text = "chart1";
             // 
