@@ -7,17 +7,22 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Xml;
 
 namespace _5WebService
 {
     public partial class Form1 : Form
     {
-        
+        BindingList<Entities.RateData> Rates = new BindingList<Entities.RateData>();
+
         public Form1()
         {
             InitializeComponent();
-            ExchangeRates();
-            
+
+            dataGridView1.DataSource = Rates; 
+            var results = ExchangeRates();
+            ProcessXML(results);
+
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -25,7 +30,7 @@ namespace _5WebService
 
         }
 
-        private void ExchangeRates()
+        private string ExchangeRates()
         {
             var mnbService = new ServiceReference1.MNBArfolyamServiceSoapClient();
 
@@ -38,7 +43,35 @@ namespace _5WebService
 
             var response = mnbService.GetExchangeRates(request);
             var result = response.GetExchangeRatesResult;
+            return result;
             //richTextBox1.Text = result;
+        }
+
+        private void ProcessXML(string result)
+        {
+            XmlDocument xml = new XmlDocument();
+            xml.LoadXml(result);
+
+            foreach (XmlElement element in xml.DocumentElement)
+            {
+                Entities.RateData r = new Entities.RateData();
+                Rates.Add(r);
+                r.Date = DateTime.Parse(element.GetAttribute("date"));
+                var childElement = (XmlElement)element.ChildNodes[0];
+                r.Currency = childElement.GetAttribute("curr");
+
+                var egyseg = decimal.Parse(childElement.GetAttribute("unit"));
+                var ertek = decimal.Parse(childElement.InnerText);
+
+                if ( (ertek/egyseg)!=0)
+                {
+                    r.Value = ertek / egyseg;
+                }                
+            }
+        }
+        private void MakeChart()
+        {
+            chartRateData.DataSource = Rates;
         }
     }
 }
