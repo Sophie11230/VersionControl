@@ -120,9 +120,18 @@ namespace _4RealEstate
             firstColRange.Interior.Color = Color.LightYellow;
             
             lastColRange.Interior.Color = Color.LightGreen;
-            lastColRange.NumberFormat = "# ###.##";            
+            lastColRange.NumberFormat = "# ###.00";            
 
             headerRange.Interior.Color = Color.LightBlue;
+
+            
+            for (int row = 2; row < values.GetLength(0)+2; row++)
+            {
+                for (int col = 1; col < values.GetLength(1)+1; col++)
+                {
+                    xlSheet.Cells[row, col].Interior.Color = Color.Red; 
+                }   
+            }
 
         }
         private string GetCell(int x, int y)
