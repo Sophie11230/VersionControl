@@ -15,15 +15,15 @@ namespace _5WebService
     public partial class Form1 : Form
     {
         BindingList<Entities.RateData> Rates = new BindingList<Entities.RateData>();
+        BindingList<string> currencies = new BindingList<string>();
 
         public Form1()
         {
             InitializeComponent();
+            GetCurrencies();
 
-            dataGridView1.DataSource = Rates; 
-            var results = ExchangeRates();
-            ProcessXML(results);
-            MakeChart();
+            RefreshData();
+            comboBox1.DataSource = currencies;
 
         }
 
@@ -38,9 +38,9 @@ namespace _5WebService
 
             var request = new ServiceReference1.GetExchangeRatesRequestBody()
             {
-                currencyNames = "EUR",
-                startDate = "2020-01-01",
-                endDate = "2020-06-30"
+                currencyNames = comboBox1.SelectedItem.ToString(),
+                startDate = dateTimePicker1.Value.ToString(),
+                endDate = dateTimePicker2.Value.ToString()
             };
 
             var response = mnbService.GetExchangeRates(request);
@@ -60,6 +60,8 @@ namespace _5WebService
                 Rates.Add(r);
                 r.Date = DateTime.Parse(element.GetAttribute("date"));
                 var childElement = (XmlElement)element.ChildNodes[0];
+                if (childElement == null) continue;
+
                 r.Currency = childElement.GetAttribute("curr");
 
                 var egyseg = decimal.Parse(childElement.GetAttribute("unit"));
@@ -88,6 +90,43 @@ namespace _5WebService
             chartArea.AxisY.MajorGrid.Enabled = false;
             chartArea.AxisY.IsStartedFromZero = false;
 
+        }
+        private void RefreshData()
+        {
+            Rates.Clear();
+            dataGridView1.DataSource = Rates;
+            var results = ExchangeRates();
+            ProcessXML(results);
+            MakeChart();
+        }
+        private void GetCurrencies()
+        {
+            var mnbService = new ServiceReference1.MNBArfolyamServiceSoapClient();
+            var currRequest = new ServiceReference1.GetCurrenciesRequestBody();
+            var currResponse = mnbService.GetCurrencies(currRequest);
+            var currResult = currResponse.GetCurrenciesResult;
+
+            XmlDocument xml = new XmlDocument();
+            xml.LoadXml(currResult);
+            foreach (XmlElement element in xml.DocumentElement.ChildNodes[0])
+            {
+
+                currencies.Add(element.InnerText);
+            }
+        }
+        private void dateTimePicker1_ValueChanged(object sender, EventArgs e)
+        {
+            RefreshData();
+        }
+
+        private void dateTimePicker2_ValueChanged(object sender, EventArgs e)
+        {
+            RefreshData();
+        }
+
+        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            RefreshData();
         }
     }
 }
