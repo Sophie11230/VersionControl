@@ -1,4 +1,5 @@
-﻿using _6Santa.Entities;
+﻿using _6Santa.Abstraction;
+using _6Santa.Entities;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -13,11 +14,11 @@ namespace _6Santa
 {
     public partial class Form1 : Form
     {
-        List<Ball> _balls = new List<Ball>();
+        List<Toy> _toys = new List<Toy>();
 
-        private BallFactory _factory;
+        private IToyFactory _factory;
 
-        public BallFactory Factory
+        public IToyFactory Factory
         {
             get { return _factory; }
             set { _factory = value; }
@@ -38,25 +39,25 @@ namespace _6Santa
 
         private void createTimer_Tick(object sender, EventArgs e)
         {
-            var ball = Factory.CreateNew();            
-            _balls.Add(ball);
-            ball.Left = -ball.Width;
-            panel1.Controls.Add(ball);
+            var toy = Factory.CreateNew();            
+            _toys.Add(toy);
+            toy.Left = -toy.Width;
+            panel1.Controls.Add(toy);
             
         }
 
         private void conveyorTimer_Tick(object sender, EventArgs e)
         {
             int maxPos = 0;
-            foreach (var b in _balls)
+            foreach (var b in _toys)
             {
-                b.MoveBall();
+                b.MoveToy();
                 if (b.Left > maxPos) maxPos = b.Left;
             }
             if (maxPos >=1000)
             {
-                var last = _balls[0];
-                _balls.Remove(last);
+                var last = _toys[0];
+                _toys.Remove(last);
                 panel1.Controls.Remove(last);
             }
         }
