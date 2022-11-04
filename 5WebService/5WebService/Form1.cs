@@ -20,10 +20,15 @@ namespace _5WebService
         public Form1()
         {
             InitializeComponent();
+            var mnbService = new ServiceReference1.MNBArfolyamServiceSoapClient();
+            var currRequest = new ServiceReference1.GetCurrenciesRequestBody();
+            var currResponse = mnbService.GetCurrencies(currRequest);
+            var currResult = currResponse.GetCurrenciesResult;
             GetCurrencies();
-
-            RefreshData();
             comboBox1.DataSource = currencies;
+            comboBox1.Text = "EUR";
+            RefreshData();
+
 
         }
 
