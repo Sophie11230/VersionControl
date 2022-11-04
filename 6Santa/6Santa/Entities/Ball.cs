@@ -8,13 +8,13 @@ using System.Windows.Forms;
 
 namespace _6Santa.Entities
 {
-    class Ball: Label
+    public class Ball: Label
     {
         public Ball()
         {
             AutoSize = false;
-            Height = 50;
             Width = 50;
+            Height = Width;
             Paint += Ball_Paint;
         }
 
