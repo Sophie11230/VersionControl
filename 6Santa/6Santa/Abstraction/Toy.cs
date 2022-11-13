@@ -15,6 +15,7 @@ namespace _6Santa.Abstraction
             AutoSize = false;
             Width = 50;
             Height = Width;
+            Top = 100;
             Paint += Toy_Paint;
         }
 
