@@ -25,8 +25,13 @@ namespace _9Simulation
             Population = GetPopulation(@"C:\Users\Zsofi\Documents\CORVINUS\5. félév\Informatikai Rendszerek Fejlesztése\nép.csv");
             BirthProbabilities = GetBirthProbabilities(@"C:\Users\Zsofi\Documents\CORVINUS\5. félév\Informatikai Rendszerek Fejlesztése\születés.csv");
             DeathProbabilities = GetDeathProbabilities(@"C:\Users\Zsofi\Documents\CORVINUS\5. félév\Informatikai Rendszerek Fejlesztése\halál.csv");
+            
 
-            for (int year = 2005; year <= 2024; year++)
+        }
+
+        private void Simulation()
+        {
+            for (int year = 2005; year <= numericUpDown1.Value; year++)
             {
                 // Végigmegyünk az összes személyen
                 for (int i = 0; i < Population.Count; i++)
@@ -43,7 +48,6 @@ namespace _9Simulation
                 Console.WriteLine(
                     string.Format("Év:{0} Fiúk:{1} Lányok:{2}", year, nbrOfMales, nbrOfFemales));
             }
-
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -147,6 +151,11 @@ namespace _9Simulation
                     Population.Add(újszülött);
                 }
             }
+        }
+
+        private void buttonStart_Click(object sender, EventArgs e)
+        {
+            Simulation();
         }
     }
 }
