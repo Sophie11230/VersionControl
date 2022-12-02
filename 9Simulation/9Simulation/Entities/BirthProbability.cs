@@ -8,7 +8,7 @@ namespace _9Simulation
 {
     public class BirthProbability
     {
-        public int Age { get; set; }
+        public int age { get; set; }
         public int NumberOfChildren { get; set; }
         public double pBirth { get; set; }
     }
